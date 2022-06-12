@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +34,18 @@ public class MovieController {
 	@PostMapping
 	public int add(@RequestBody List<Movie> movies) {
 		return movieRepository.save(movies);
+	}
+	
+	@PutMapping("/{id}")
+	public int update(@PathVariable("id") int id, @RequestBody Movie updatedMovie) {
+		Movie movie = movieRepository.getById(id);
+		if (movie != null) {
+			movie.setTitle(updatedMovie.getTitle());
+			movie.setRating(updatedMovie.getRating());
+			movieRepository.update(movie);
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 }

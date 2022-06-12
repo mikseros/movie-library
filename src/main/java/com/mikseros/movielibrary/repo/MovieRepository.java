@@ -31,4 +31,9 @@ public class MovieRepository {
 						movie.getTitle(), movie.getRating()));
 		return 1;
 	}
+	
+	public int update(Movie movie) {
+		return jdbcTemplate.update("UPDATE movie SET title=?, rating=? WHERE id=?",
+				movie.getTitle(), movie.getRating(), movie.getId());
+	}
 }
