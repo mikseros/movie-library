@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -42,6 +43,19 @@ public class MovieController {
 		if (movie != null) {
 			movie.setTitle(updatedMovie.getTitle());
 			movie.setRating(updatedMovie.getRating());
+			movieRepository.update(movie);
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	@PatchMapping("/{id}")
+	public int partiallyUpdate(@PathVariable("id") int id, @RequestBody Movie updatedMovie) {
+		Movie movie = movieRepository.getById(id);
+		if (movie != null) {
+			if(updatedMovie.getTitle() != null) movie.setTitle(updatedMovie.getTitle());
+			if(updatedMovie.getRating() > 0) movie.setRating(updatedMovie.getRating());
 			movieRepository.update(movie);
 			return 1;
 		} else {
